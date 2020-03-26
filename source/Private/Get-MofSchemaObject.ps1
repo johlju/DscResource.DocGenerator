@@ -69,9 +69,10 @@ function Get-MofSchemaObject
 
     #endregion
 
+    $exceptionCollection = [System.Collections.ObjectModel.Collection[System.Exception]]::new()
+
     try
     {
-        $exceptionCollection = [System.Collections.ObjectModel.Collection[System.Exception]]::new()
         $moduleInfo = [System.Tuple]::Create('Module', [System.Version] '1.0.0')
 
         $class = [Microsoft.PowerShell.DesiredStateConfiguration.Internal.DscClassCache]::ImportClasses(
@@ -80,6 +81,8 @@ function Get-MofSchemaObject
     }
     catch
     {
+        Write-Error -Exception $exceptionCollection[0]
+
         throw "Failed to import classes from file $FileName. Error $_"
     }
     finally

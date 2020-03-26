@@ -173,6 +173,7 @@ class MSFT_MofHelperTest : OMI_BaseResource
                 $property.EmbeddedInstance | Should -Be 'MSFT_Credential'
             }
 
+            # Regression test for https://github.com/dsccommunity/DscResource.Test/issues/65.
             Context 'When the schema is formatted differently but still valid' {
                 Context 'When the colon is not prefix with whitespace' {
                     BeforeAll {

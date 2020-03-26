@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and the build task `Generate_Wiki_Content` ([issue #20](https://github.com/dsccommunity/DscResource.DocGenerator/issues/20)).
 - The function `Get-MofSchemaObject` did not correctly create the temporary
   schema file depending on the formatting of the schema.
+- The function `Get-MofSchemaObject` was missing error handling when calling
+  method `ImportClasses()`, it now outputs the first exception ([issue #26](https://github.com/dsccommunity/DscResource.DocGenerator/issues/26)). 
 
 ## [0.4.0] - 2020-02-25
 
