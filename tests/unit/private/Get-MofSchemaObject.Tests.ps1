@@ -232,6 +232,25 @@ class MSFT_MofHelperTest :  OMI_BaseResource
                     }
                 }
             }
+
+            Context 'When the schema is invalid' {
+                BeforeAll {
+                    # Regression test for https://github.com/dsccommunity/DscResource.Test/issues/65.
+                    $script:fileContent = @"
+[ClassVersion("1.0.0.0"), FriendlyName("MofHelperTest")]
+class MSFT_MofHelperTest OMI_BaseResource
+{
+    [Key,      Description("Test key string property")] String Name;
+};
+"@
+
+                    Set-Content -Path $script:filePath -Value $fileContent -Force
+                }
+
+                It 'Should import the class from the schema file without throwing' {
+                    { Get-MofSchemaObject -FileName $script:filePath -Verbose } | Should -Not -Throw
+                }
+            }
         }
     }
 }

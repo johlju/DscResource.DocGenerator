@@ -81,13 +81,23 @@ function Get-MofSchemaObject
     }
     catch
     {
-        Write-Error -Exception $exceptionCollection[0]
-
         throw "Failed to import classes from file $FileName. Error $_"
     }
     finally
     {
         Remove-Item -LiteralPath $tempFilePath -Force
+    }
+
+    if ($exceptionCollection.Count -gt 0)
+    {
+        if ($exceptionCollection[0].InnerException)
+        {
+            throw $exceptionCollection[0].InnerException.Message
+        }
+        else
+        {
+            throw $exceptionCollection[0].Message
+        }
     }
 
     $attributes = foreach ($property in $class.CimClassProperties)
