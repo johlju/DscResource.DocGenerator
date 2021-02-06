@@ -46,27 +46,19 @@ class AzDevOpsProject
 
                 Mock -CommandName Write-Debug
 
-                <#
-                    The blank rows are intentionally as the parse error record that
-                    is returned have them. The string is normalize to CRLF to
-                    handle cross-plattform testing.
-                #>
-                $mockWriteDebugOutput = @'
-
-Extent          ErrorId                     Message                                                                                                   IncompleteInput
-------          -------                     -------                                                                                                   ---------------
-[DscResource()] DscResourceMissingSetMethod The DSC resource 'AzDevOpsProject' is missing a Set method that returns [void] and accepts no parameters.           False
-
-
-'@ -replace '\r?\n', "`r`n"
+                $mockWriteDebugOutput = 'The DSC resource ''AzDevOpsProject'' is missing a Set method that returns [void] and accepts no parameters.'
             }
 
             It 'Should not throw an exception and call the correct mock' {
                 { Get-ClassResourceCommentBasedHelp -Path $mockFilePath -Verbose } | Should -Not -Throw
 
                 Assert-MockCalled -CommandName Write-Debug -ParameterFilter {
-                    # Normalize the message to CRLF to handle cross-plattform testing.
-                    ($Message -replace '\r?\n', "`r`n") -eq ($script:localizedData.IgnoreAstParseErrorMessage -f $mockWriteDebugOutput)
+                    <#
+                        Assert the localized string is part of the message, and that it
+                        contain the expected parse error message.
+                    #>
+                    $Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '') `
+                    -and $Message -match [System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput)
                 } -Exactly -Times 1 -Scope It
             }
         }
