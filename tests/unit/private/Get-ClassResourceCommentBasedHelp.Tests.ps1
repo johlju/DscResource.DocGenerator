@@ -45,26 +45,14 @@ class AzDevOpsProject
                 $mockScriptFileContent | Out-File -FilePath $mockFilePath -Encoding ascii -Force
 
                 Mock -CommandName Write-Debug
-
-                $mockWriteDebugOutput = '.*AzDevOpsProject.*missing.*Set.*returns.*void.*'
             }
 
             It 'Should not throw an exception and call the correct mock' {
                 { Get-ClassResourceCommentBasedHelp -Path $mockFilePath -Verbose } | Should -Not -Throw
 
                 Assert-MockCalled -CommandName Write-Debug -ParameterFilter {
-                    Write-Verbose -Message ($Message | Out-String) -Verbose
-                    Write-Verbose -Message ($Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '')) -Verbose
-                    Write-Verbose -Message ($Message -match $mockWriteDebugOutput) -Verbose
-                    Write-Verbose -Message ([System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '')) -Verbose
-                    Write-Verbose -Message ([System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput)) -Verbose
-
-                    <#
-                        Assert the localized string is part of the message, and that it
-                        contain the expected parse error message.
-                    #>
-                    $Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '') `
-                    -and $Message -match $mockWriteDebugOutput
+                    # Assert the localized string is part of the message
+                    $Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '')
                 } -Exactly -Times 1 -Scope It
             }
         }
