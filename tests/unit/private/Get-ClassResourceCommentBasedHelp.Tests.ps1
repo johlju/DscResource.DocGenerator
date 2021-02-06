@@ -46,16 +46,16 @@ class AzDevOpsProject
 
                 Mock -CommandName Write-Debug
 
-                $mockWriteDebugOutput = 'The DSC resource ''AzDevOpsProject'' is missing a Set method that returns [void] and accepts no parameters.'
+                $mockWriteDebugOutput = '.*AzDevOpsProject.*missing.*Set.*returns.*void.*'
             }
 
             It 'Should not throw an exception and call the correct mock' {
                 { Get-ClassResourceCommentBasedHelp -Path $mockFilePath -Verbose } | Should -Not -Throw
 
                 Assert-MockCalled -CommandName Write-Debug -ParameterFilter {
-                    Write-Verbose -Message $Message -Verbose
+                    Write-Verbose -Message ($Message | Out-String) -Verbose
                     Write-Verbose -Message ($Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '')) -Verbose
-                    Write-Verbose -Message ($Message -match [System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput)) -Verbose
+                    Write-Verbose -Message ($Message -match $mockWriteDebugOutput) -Verbose
                     Write-Verbose -Message ([System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '')) -Verbose
                     Write-Verbose -Message ([System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput)) -Verbose
 
@@ -64,7 +64,7 @@ class AzDevOpsProject
                         contain the expected parse error message.
                     #>
                     $Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '') `
-                    -and $Message -match [System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput)
+                    -and $Message -match $mockWriteDebugOutput
                 } -Exactly -Times 1 -Scope It
             }
         }
