@@ -54,10 +54,10 @@ class AzDevOpsProject
 
                 Assert-MockCalled -CommandName Write-Debug -ParameterFilter {
                     Write-Verbose -Message $Message -Verbose
-                    Write-Verbose -Message [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '') -Verbose
-                    Write-Verbose -Message [System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput) -Verbose
-                    Write-Verbose -Message $Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '') -Verbose
-                    Write-Verbose -Message $Message -match [System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput) -Verbose
+                    Write-Verbose -Message ($Message -match [System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '')) -Verbose
+                    Write-Verbose -Message ($Message -match [System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput)) -Verbose
+                    Write-Verbose -Message ([System.Text.RegularExpressions.RegEx]::Escape($script:localizedData.IgnoreAstParseErrorMessage -f '')) -Verbose
+                    Write-Verbose -Message ([System.Text.RegularExpressions.RegEx]::Escape($mockWriteDebugOutput)) -Verbose
 
                     <#
                         Assert the localized string is part of the message, and that it
