@@ -237,6 +237,6 @@ task Publish_GitHub_Wiki_Content {
 
         Write-Build Magenta "Publishing Wiki content."
 
-        Publish-WikiContent @publishWikiContentParameters
+        Publish-WikiContent @publishWikiContentParameters -Verbose -Debug
     }
 }
