@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix Dockerfile to include GitVersion alias for PowerShell Extension profile script.
 - Fix `.vscode/settings.json` file to exclude unrecognized words.
+- Fix localization HQRM tests.
 
 ## [0.12.5] - 2024-08-14
 
